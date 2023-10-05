@@ -13,7 +13,7 @@ def run():
 
 
 def corr_text():
-    massive = [float(i) for i in run().split(sep='x') if i != '']
+    massive = [float(i.replace('\xa0', '')) for i in run().split(sep='x') if i != '']
     if len(massive) == 20:
         with open('result', mode='a') as r:
             print(massive, file=r)
