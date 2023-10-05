@@ -1,24 +1,30 @@
+
+
 from playwright.sync_api import Playwright, sync_playwright, expect
 
-
-def run():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
-        page.goto("https://lucky-jet-ws.1play.one/?exitUrl=null&language=ru&b=demo")
-        page.locator(".sc-jIILKH > .sc-gYbzsP > .sc-hhOBVt").click()
-        page.screenshot(path="example.png")
-        locators = ".sc-dwnOUR"
-        return page.locator(locators).text_content()
+class Parser_Aviator():
+    #def __init__(self):
 
 
-def corr_text():
-    massive = [float(i.replace('\xa0', '')) for i in run().split(sep='x') if i != '']
-    if len(massive) == 20:
-        with open('result', mode='a') as r:
-            print(massive, file=r)
+    def run(self):
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=False)
+            self.page = browser.new_page()
+            self.page.goto("https://lucky-jet-ws.1play.one/?exitUrl=null&language=ru&b=demo")
+            self.page.locator(".sc-jIILKH > .sc-gYbzsP > .sc-hhOBVt").click()
+            self.page.screenshot(path="example.png")
+            self.locators = ".sc-dwnOUR"        #Для замены возможного div class
+            return self.page.locator(self.locators).text_content()
+
+    def corr_text(self):
+        massive = [float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != '']
+        if len(massive) == 20:
+            with open('result', mode='a') as r:
+                print(massive, file=r)
 
 
-while True:
-    corr_text()
+if __name__ == "__main__":
+    while True:
+        Parser_Aviator()
+
 
