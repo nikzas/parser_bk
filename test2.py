@@ -5,10 +5,9 @@ from playwright.sync_api import Playwright, sync_playwright, expect
 class Parser_Aviator():
     #def __init__(self):
 
-
     def run(self):
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=False)
+            browser = p.chromium.launch(headless=True)
             self.page = browser.new_page()
             self.page.goto("https://lucky-jet-ws.1play.one/?exitUrl=null&language=ru&b=demo")
             self.page.locator(".sc-jIILKH > .sc-gYbzsP > .sc-hhOBVt").click()
@@ -25,6 +24,7 @@ class Parser_Aviator():
 
 if __name__ == "__main__":
     while True:
-        Parser_Aviator()
+        start = Parser_Aviator()
+        start.corr_text()
 
 
