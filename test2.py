@@ -18,7 +18,7 @@ class Parser_Aviator():
     def corr_text(self):
         massive = [float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != '']
         if len(massive) == 20:
-            with open('result', mode='a') as r:
+            with open('result.txt', mode='a') as r:
                 print(massive, file=r)
 
 
