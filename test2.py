@@ -7,9 +7,9 @@ class Parser_Aviator():
 
     def run(self):
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
+            browser = p.chromium.launch(headless=False)
             self.page = browser.new_page()
-            self.page.goto("https://lucky-jet-ws.1play.one/?exitUrl=null&language=ru&b=demo")
+            self.page.goto("https://lucky-jet.gamedev-atech.cc/?exitUrl=https%253A%252F%252F1wowei.xyz%252Fcasino&language=ru&b=demo")
             self.page.locator(".sc-jIILKH > .sc-gYbzsP > .sc-hhOBVt").click()
             self.page.screenshot(path="example.png")
             self.locators = ".sc-dwnOUR"        #Для замены возможного div class
