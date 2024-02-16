@@ -41,3 +41,10 @@ if __name__ == "__main__":
         # next_mass_new = next_mass[:index_cnt]
         # global_massive = pd.concat([next_mass_new, global_massive])
         # print(global_massive)
+
+
+        # next_mass[next_mass.isin(first_cnt)].index
+        # next_mass[next_mass[0].isin(first_cnt)].index
+        # indexes = global_massive[global_massive[0].isin(first_cnt)].index
+
+
