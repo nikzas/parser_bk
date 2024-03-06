@@ -3,10 +3,11 @@ from browser_data import ParserAviator
 
 if __name__ == "__main__":
     # Разделить столбцами цифры в csv
-    start = ParserAviator()
-    global_massive = start.corr_text_df()
-    output_csv = start.save_to_csv(global_massive)
+    st = ParserAviator()
+    start_mas = st.corr_text_df()
     while True:
-        next_mass = start.corr_text_series()
-        result = start.last_edit_text(global_massive, next_mass)
+        next_mass = st.corr_text_series()
+        result = st.last_edit_text(start_mas, next_mass)
+        output_csv = st.save_in_csv(result)
+
 
