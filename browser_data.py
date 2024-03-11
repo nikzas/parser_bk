@@ -37,14 +37,20 @@ class ParserAviator():
         print(global_massive)
         return global_massive
 
-    def get_out_index(self, first, second):
-        """ПОРАБОАТЬ С ЭТОЙ ФУНКЦИЕЙ"""
-        first_cnt = first[0:3]
-        find_index = second[second.isin(first_cnt)].index
-        need_count = second[:find_index[0]]
-        all = pd.concat([need_count])
-        return all
+    def get_out_index(self, mass1, mass2):
+        first_cnt = mass1[0:5]
+        find_index = mass2[mass2.isin(first_cnt)].index
+        if not find_index.empty:
+            need_count = mass2[:find_index[0]]
+            return need_count
+        else:
+            massive = [float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != '']
+            ser1 = pd.Series(massive)
+            return ser1
 
+    def result_cnt(self, f_m, add_numbers):
+        result = pd.concat([add_numbers, f_m]).reset_index(drop=True)
+        return result
 
     def get_data(self):
         """Запрос времени"""

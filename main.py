@@ -4,10 +4,10 @@ from browser_data import ParserAviator
 if __name__ == "__main__":
     # Разделить столбцами цифры в csv
     st = ParserAviator()
-    start_mas = st.corr_text_df()
+    m1 = st.corr_text_series()
     while True:
-        next_mass = st.corr_text_series()
-        result = st.last_edit_text(start_mas, next_mass)
-        output_csv = st.save_in_csv(result)
-
-
+        m2 = st.corr_text_series()
+        find_index = st.get_out_index(m1, m2)
+        out_massive = st.result_cnt(m1, find_index)
+        print(out_massive)
+        # output_csv = st.save_in_csv(out_massive)
