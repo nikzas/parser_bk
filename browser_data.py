@@ -1,5 +1,6 @@
 from playwright.sync_api import sync_playwright
 import pandas as pd
+import numpy as np
 import datetime
 
 
@@ -30,23 +31,13 @@ class ParserAviator():
         ser = pd.Series(massive)
         return ser
 
-    def last_edit_text(self, first_mass, next_mass):
-        first_cnt = first_mass[0:3].stack()
-        index_find = next_mass[next_mass.isin(first_cnt)].index
-        global_massive = pd.concat([next_mass[:index_find.values[0]], first_mass]).reset_index(drop=True)
-        print(global_massive)
-        return global_massive
-
-    def get_out_index(self, mass1, mass2):
-        first_cnt = mass1[0:5]
-        find_index = mass2[mass2.isin(first_cnt)].index
-        if not find_index.empty:
-            need_count = mass2[:find_index[0]]
-            return need_count
-        else:
-            massive = [float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != '']
-            ser1 = pd.Series(massive)
-            return ser1
+    def shape(self, m1, m2, st_mass):
+        find_index = m2[m2.isin(m1)].index
+        need_count = m2[:find_index[0]]
+        starting_massive = pd.concat([need_count, st_mass]).reset_index(drop=True)
+        first_cnt = starting_massive[0:5]
+        print(starting_massive)
+        return first_cnt
 
     def result_cnt(self, f_m, add_numbers):
         result = pd.concat([add_numbers, f_m]).reset_index(drop=True)
@@ -60,3 +51,15 @@ class ParserAviator():
     def save_in_csv(self, data_znach):
         """Создание csv"""
         return data_znach.to_csv('result_to_{}.csv'.format(self.get_data()), encoding='utf-8')
+
+    def find_index(self, first_cnt, st_ms):
+        window_size = len(first_cnt)
+        is_subset = False
+        found_indices = []
+
+        for i in range(len(st_ms) - window_size + 1):
+            window = st_ms[i:i + window_size]
+            if np.array_equal(window, first_cnt):
+                is_subset = True
+                found_indices = list(range(i, i + window_size))
+                break
