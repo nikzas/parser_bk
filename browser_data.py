@@ -22,26 +22,20 @@ class ParserAviator():
     def corr_text_df(self):
         """Текст для DataFrame"""
         massive = [float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != '']  # Здесь  уже float
-        df = pd.DataFrame(massive)
+        df = np.DataFrame(massive)
         return df
 
-    def corr_text_series(self):
-        """Текст для Series"""
+    def corr_text_array(self):
+        """Текст для array"""
         massive = [float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != '']
-        ser = pd.Series(massive)
+        ser = np.array(massive)
         return ser
 
-    def shape(self, m1, m2, st_mass):
-        find_index = m2[m2.isin(m1)].index
-        need_count = m2[:find_index[0]]
-        starting_massive = pd.concat([need_count, st_mass]).reset_index(drop=True)
-        first_cnt = starting_massive[0:5]
+    def shape(self, m1, m2):
+        starting_massive = pd.concat([m1, m2]).reset_index(drop=True)
         print(starting_massive)
-        return first_cnt
+        return starting_massive
 
-    def result_cnt(self, f_m, add_numbers):
-        result = pd.concat([add_numbers, f_m]).reset_index(drop=True)
-        return result
 
     def get_data(self):
         """Запрос времени"""
@@ -52,7 +46,7 @@ class ParserAviator():
         """Создание csv"""
         return data_znach.to_csv('result_to_{}.csv'.format(self.get_data()), encoding='utf-8')
 
-    def find_index(self, first_cnt, st_ms):
+    def found_index(self, first_cnt, st_ms):
         window_size = len(first_cnt)
         is_subset = False
         found_indices = []
@@ -61,5 +55,6 @@ class ParserAviator():
             window = st_ms[i:i + window_size]
             if np.array_equal(window, first_cnt):
                 is_subset = True
-                found_indices = list(range(i, i + window_size))
+                found_indices = pd.Index(list(range(i, i + window_size)))
                 break
+        return found_indices
