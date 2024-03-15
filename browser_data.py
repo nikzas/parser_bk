@@ -31,7 +31,7 @@ class ParserAviator():
         ser = np.array(massive)
         return ser
 
-    def shape(self, m1, m2):
+    def shape1(self, m1, m2):
         starting_massive = pd.concat([m1, m2]).reset_index(drop=True)
         print(starting_massive)
         return starting_massive
