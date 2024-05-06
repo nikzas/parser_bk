@@ -15,9 +15,9 @@ class ParserAviator():
             self.page = browser.new_page()
             self.page.goto("https://lucky-jet.gamedev-atech.cc/"
                            "?exitUrl=https%253A%252F%252F1wowei.xyz%252Fcasino&language=ru&b=demo")
-            self.page.wait_for_selector(".sc-ZqFbI").click()  # Для клика по кнопке используем див класс находящийся во flex
+            self.page.wait_for_selector(".sc-kAkpmW").click()  # Для клика по кнопке используем див класс находящийся во flex
             self.page.screenshot(path="example.png")
-            return self.page.locator(".sc-UpCWa").text_content()  #Для замены используем <div id="history" # class="sc-UpCWa fohmDx">
+            return self.page.locator(".sc-ggpjZQ").text_content()  #Для замены используем <div id="history" # class="sc-UpCWa fohmDx">
 
     def corr_text_df(self):
         """Текст для DataFrame"""
