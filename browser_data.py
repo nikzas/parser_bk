@@ -36,7 +36,6 @@ class ParserAviator():
         print(starting_massive)
         return starting_massive
 
-
     def get_data(self):
         """Запрос времени"""
         current_date = datetime.date.today().isoformat()
@@ -58,3 +57,18 @@ class ParserAviator():
                 found_indices = pd.Index(list(range(i, i + window_size)))
                 break
         return found_indices
+
+    def index_str(self, first_count, second_count):
+        '''не подходит'''
+        x = np.array([])
+        for i in first_count:
+            cnt = np.where(second_count == i)
+            x = np.append(x, cnt)
+
+    def roll(self,
+             a,      # ND array
+             b,      # rolling 1D window array
+             dx=1):  # step size (horizontal)
+        shape = a.shape[:-1] + (int((a.shape[-1] - b.shape[-1]) / dx) + 1,) + b.shape
+        strides = a.strides[:-1] + (a.strides[-1] * dx,) + a.strides[-1:]
+        return np.lib.stride_tricks.as_strided(a, shape=shape, strides=strides)
