@@ -19,22 +19,13 @@ class ParserAviator():
             self.page.screenshot(path="example.png")
             return self.page.locator(".sc-ggpjZQ").text_content()  #Для замены используем <div id="history" # class="sc-UpCWa fohmDx">
 
-    def corr_text_df(self):
-        """Текст для DataFrame"""
-        massive = [float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != '']  # Здесь  уже float
-        df = np.DataFrame(massive)
-        return df
-
     def corr_text_array(self):
         """Текст для array"""
-        massive = [float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != '']
-        ser = np.array(massive)
-        return ser
-
-    def shape1(self, m1, m2):
-        starting_massive = pd.concat([m1, m2]).reset_index(drop=True)
-        print(starting_massive)
-        return starting_massive
+        massive = pd.Series([float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != ''])
+        if len(massive) == 20:
+            return massive
+        elif len(massive) == 21:
+            return massive[1:21]
 
     def get_data(self):
         """Запрос времени"""
@@ -57,18 +48,3 @@ class ParserAviator():
                 found_indices = pd.Index(list(range(i, i + window_size)))
                 break
         return found_indices
-
-    def index_str(self, first_count, second_count):
-        '''не подходит'''
-        x = np.array([])
-        for i in first_count:
-            cnt = np.where(second_count == i)
-            x = np.append(x, cnt)
-
-    def roll(self,
-             a,      # ND array
-             b,      # rolling 1D window array
-             dx=1):  # step size (horizontal)
-        shape = a.shape[:-1] + (int((a.shape[-1] - b.shape[-1]) / dx) + 1,) + b.shape
-        strides = a.strides[:-1] + (a.strides[-1] * dx,) + a.strides[-1:]
-        return np.lib.stride_tricks.as_strided(a, shape=shape, strides=strides)
