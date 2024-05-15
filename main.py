@@ -2,7 +2,7 @@ from browser_data import ParserAviator
 import pandas as pd
 
 
-# output_csv = st.save_in_csv(all_massive)
+#
 
 
 if __name__ == "__main__":
@@ -16,6 +16,7 @@ if __name__ == "__main__":
         count_nehvat = b[:st.found_index(count, b)[0]] #Наложили маску - получили числа
         ALL_MASSIVE = pd.concat([count_nehvat, ALL_MASSIVE], ignore_index=True)
         count = b[:5]
+        output_csv = st.save_in_csv(ALL_MASSIVE)
         print(ALL_MASSIVE)
 
 
