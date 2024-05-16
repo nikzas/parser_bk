@@ -6,6 +6,7 @@ import datetime
 
 class ParserAviator():
     def __init__(self):
+        self.data_current = None
         self.page = None
 
     def run(self):
@@ -32,12 +33,11 @@ class ParserAviator():
 
     def get_data(self):
         """Запрос времени"""
-        current_date = datetime.date.today().isoformat()
-        return current_date
+        return datetime.date.today().isoformat()
 
-    def save_in_csv(self, data_znach):
+    def save_in_csv(self, array_data, data_current):
         """Создание csv"""
-        return data_znach.to_csv('result_to_{}.csv'.format(self.get_data()), encoding='utf-8')
+        return array_data.to_csv(f'result_to_{data_current}.csv')
 
     def found_index(self, first_cnt, st_ms):
         window_size = len(first_cnt)
