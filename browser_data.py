@@ -30,6 +30,9 @@ class ParserAviator():
         elif len(massive) <= 19:
             massive2 = pd.Series([float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != ''])
             return massive2
+        elif len(massive) == 0:
+            massive3 = pd.Series([float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != ''])
+            return massive3
 
     def get_data(self):
         """Запрос времени"""
