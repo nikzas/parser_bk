@@ -1,19 +1,18 @@
-import numpy as np
+from playwright.sync_api import sync_playwright
 
-first_cnt = np.array([1.61, 1.42, 3.45, 9.19])
-st_ms = np.array([1.61, 1.42, 3.45, 1.42, 1.61, 1.42, 3.45, 9.19, 1.65, 1.61, 10.67, 1.76, 1.27, 1.00, 1.00, 1.46, 1.54, 1.12, 5.65])
 
-def found_index(self, first_cnt, st_ms):
-    window_size = len(first_cnt)
-    is_subset = False
-    found_indices = []
+def get_new_numbers():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False, timeout=15000)
+        page = browser.new_page()
+        page.goto("https://lucky-jet.gamedev-atech.cc/"
+                  "?exitUrl=https%253A%252F%252F1wowei.xyz%252Fcasino&language=ru&b=demo")
+        page.wait_for_selector(".sc-kAkpmW").click()
+        while True:
+            page.screenshot(path="example.png")
+            result = page.locator(".sc-ggpjZQ").text_content()
+            print(result)
 
-    for i in range(len(st_ms) - window_size + 1):
-        window = st_ms[i:i+window_size]
-        if np.array_equal(window, first_cnt):
-            is_subset = True
-            found_indices = list(range(i, i+window_size))
-            break
-
-    print(found_indices)
-
+# Запуск функции для получения новых чисел в бесконечном цикле
+while True:
+    get_new_numbers()

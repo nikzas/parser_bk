@@ -1,4 +1,4 @@
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, TimeoutError
 import pandas as pd
 import numpy as np
 import datetime
@@ -12,27 +12,32 @@ class ParserAviator():
     def run(self):
         """Запуск и вывод str для дальнейшей обработки"""
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
+            browser = p.chromium.launch(headless=True, timeout=15000)
             self.page = browser.new_page()
             self.page.goto("https://lucky-jet.gamedev-atech.cc/"
                            "?exitUrl=https%253A%252F%252F1wowei.xyz%252Fcasino&language=ru&b=demo")
-            self.page.wait_for_selector(".sc-kAkpmW").click()  # Для клика по кнопке используем див класс находящийся во flex
-            self.page.screenshot(path="example.png")
-            return self.page.locator(".sc-ggpjZQ").text_content()  #Для замены используем <div id="history" # class="sc-UpCWa fohmDx">
+            try:
+                self.page.wait_for_selector(".sc-kAkpmW").click()  # Для клика по кнопке используем див класс находящийся во flex
+            except TimeoutError:
+                with sync_playwright() as p:
+                    browser = p.chromium.launch(headless=True)
+                    self.page = browser.new_page()
+                    self.page.goto("https://lucky-jet.gamedev-atech.cc/"
+                                   "?exitUrl=https%253A%252F%252F1wowei.xyz%252Fcasino&language=ru&b=demo")
+                    self.page.wait_for_selector(".sc-kAkpmW").click()
+            finally:
+                self.page.screenshot(path="../example.png")
+                result = self.page.locator(".sc-ggpjZQ").text_content()  # Для замены используем <div id="history" # class="sc-UpCWa fohmDx">
+                browser.close()
+                return result
 
     def corr_text_array(self):
         """Текст для array"""
         massive = pd.Series([float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != ''])
-        if len(massive) == 20:
-            return massive
-        elif len(massive) == 21:
-            return massive[1:21]
-        elif len(massive) <= 19:
-            massive2 = pd.Series([float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != ''])
-            return massive2
-        elif len(massive) == 0:
-            massive3 = pd.Series([float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != ''])
-            return massive3
+        while len(massive) != 20:
+            massive1 = pd.Series([float(i.replace('\xa0', '')) for i in self.run().split(sep='x') if i != ''])
+            return massive1
+        return massive
 
     def get_data(self):
         """Запрос времени"""
